@@ -3,7 +3,7 @@
 int main(){
 
     /* sdadsaraw*//**/int x = 5; /* dfgfdgfd *
-    /*
+     *
      *
      *
      *fgnffjdkslrewnvcx,msd

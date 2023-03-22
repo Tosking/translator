@@ -9,38 +9,43 @@ Translator::Translator(string input){
 }
 
 string Translator::delete_comments(){
-    string temp = "";
+    ifstream file;
+    file.open(this->input, ifstream::in);
+    char ch;
     State state = Normal;
     string result = "";
-    for(string::iterator it = input.begin(); it != input.end(); it++){
+    while(file.get(ch)){
         switch(state){
             case Slash:
-                if(*it == '*'){
+                if(ch == '*'){
                     state = Comment_Star;
                     break;
                 }
-                result += *it;
+                result += ch;
                 state = Normal;
                 break;
             case Star:
-                if(*it == '/'){
+                if(ch == '/'){
                     state = Normal;
                     break;
                 }
-                result += *it;
-                state = Normal;
+                else if(ch == '*'){
+                    break;
+                }
                 break;
             case Comment_Star:
-                if(*it == '*'){
+                if(ch == '*'){
                     state = Star;
                 }
                 break;
             case Comment_Slash:
-                if(*it == '\n'){
+                if(ch == '\n'){
                     state = Normal;
                 }
+                break;
+
             case Normal:
-                switch(*it){
+                switch(ch){
                     case '/':
                         state = Slash;
                         break;
@@ -48,7 +53,7 @@ string Translator::delete_comments(){
                         state = Star;
                         break;
                     default:
-                        result += *it;
+                        result += ch;
                 }
 
         }
