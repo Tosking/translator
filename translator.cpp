@@ -21,8 +21,14 @@ string Translator::delete_comments(){
                     state = Comment_Star;
                     break;
                 }
-                result += ch;
-                state = Normal;
+                if(ch == '/'){
+                    state = Comment_Slash;
+                    break;
+                }
+                else{
+                    result += ch;
+                    state = Normal;
+                }
                 break;
             case Star:
                 if(ch == '/'){
@@ -48,9 +54,6 @@ string Translator::delete_comments(){
                 switch(ch){
                     case '/':
                         state = Slash;
-                        break;
-                    case '*':
-                        state = Star;
                         break;
                     default:
                         result += ch;

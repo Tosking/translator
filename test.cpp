@@ -12,8 +12,8 @@ int main(){
      *
      *
      */
-
-    int y//*ytr**/= 6;
+     //321543
+    int y/*ytr**/= 6;
 
     return 0;
 }
