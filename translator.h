@@ -7,7 +7,9 @@ Normal,
 Slash,
 Star,
 Comment_Slash,
-Comment_Star
+Comment_Star,
+Quote,
+Back_Slash
 };
 class Translator{
 private:

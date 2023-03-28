@@ -26,6 +26,7 @@ string Translator::delete_comments(){
                     break;
                 }
                 else{
+                    result += '/';
                     result += ch;
                     state = Normal;
                 }
@@ -35,25 +36,40 @@ string Translator::delete_comments(){
                     state = Normal;
                     break;
                 }
-                else if(ch == '*'){
+                else if(ch == '*')
                     break;
-                }
+                state = Comment_Star;
                 break;
             case Comment_Star:
-                if(ch == '*'){
+                if(ch == '*')
                     state = Star;
-                }
                 break;
             case Comment_Slash:
-                if(ch == '\n'){
+                if(ch == '\n')
+                    state = Normal;
+                break;
+            case Quote:
+                if(ch == '\\')
+                    state = Back_Slash;
+                if(ch == '"' || ch == '\''){
                     state = Normal;
                 }
+                result += ch;
                 break;
-
+            case Back_Slash:
+                state = Normal;
             case Normal:
                 switch(ch){
                     case '/':
                         state = Slash;
+                        break;
+                    case '"':
+                        result += ch;
+                        state = Quote;
+                        break;
+                    case '\'':
+                        result += ch;
+                        state = Quote;
                         break;
                     default:
                         result += ch;
