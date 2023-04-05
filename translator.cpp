@@ -34,6 +34,7 @@ string Translator::delete_comments(){
             case Star:
                 if(ch == '/'){
                     state = Normal;
+                    result += ' ';
                     break;
                 }
                 else if(ch == '*')
@@ -45,19 +46,35 @@ string Translator::delete_comments(){
                     state = Star;
                 break;
             case Comment_Slash:
-                if(ch == '\n')
+                if(ch == '\n'){
                     state = Normal;
+                    result += '\n';
+                }
                 break;
-            case Quote:
+            case OBack_Slash:
+                state = OQuote;
+                result += ch;
+                break;
+            case TBack_Slash:
+                state = TQuote;
+                result += ch;
+                break;
+            case TQuote:
                 if(ch == '\\')
-                    state = Back_Slash;
-                if(ch == '"' || ch == '\''){
+                    state = TBack_Slash;
+                if(ch == '"'){
                     state = Normal;
                 }
                 result += ch;
                 break;
-            case Back_Slash:
-                state = Normal;
+            case OQuote:
+                if(ch == '\\')
+                    state = OBack_Slash;
+                if(ch == '\''){
+                    state = Normal;
+                }
+                result += ch;
+                break;
             case Normal:
                 switch(ch){
                     case '/':
@@ -65,11 +82,11 @@ string Translator::delete_comments(){
                         break;
                     case '"':
                         result += ch;
-                        state = Quote;
+                        state = TQuote;
                         break;
                     case '\'':
                         result += ch;
-                        state = Quote;
+                        state = OQuote;
                         break;
                     default:
                         result += ch;

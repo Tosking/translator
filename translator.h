@@ -8,8 +8,17 @@ Slash,
 Star,
 Comment_Slash,
 Comment_Star,
-Quote,
-Back_Slash
+OQuote,
+TQuote,
+OBack_Slash,
+TBack_Slash,
+Number,
+Identifer,
+Skip,
+Double,
+Dot,
+Long,
+
 };
 class Translator{
 private:
@@ -17,7 +26,27 @@ private:
 
 public:
     string delete_comments();
+    string
     Translator(string input);
 };
 
 #endif // TRANSLATOR_H_
+       //
+       //
+if(!isalpha(c) && !isidigt(c))
+{
+    /**/
+    states = CheckSymbol(c);
+    break;
+}
+static const State CheckSymbol(char &c)
+{
+    switch(c)
+    {
+
+        case '/':
+            return State::Slash;
+        case '\'':
+            return State::OQuote;
+    }
+}
