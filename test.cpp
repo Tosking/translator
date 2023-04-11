@@ -1,9 +1,7 @@
-/*  * / */
-a///*faaaaaaaa*/b
-hj/* fsfdsfsdfsdfffffd  **/
-a/b
-"abc\"//DEF "
-'abc\'//DEF'
-/*   * ffff /  */
-a,b,////c
-int/*aa*/c
+1234
+.1234
+4321.1234
+432432.
+213sa
+sa.345
+.6534s23

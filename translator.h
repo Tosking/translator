@@ -26,27 +26,9 @@ private:
 
 public:
     string delete_comments();
-    string
     Translator(string input);
 };
 
 #endif // TRANSLATOR_H_
        //
        //
-if(!isalpha(c) && !isidigt(c))
-{
-    /**/
-    states = CheckSymbol(c);
-    break;
-}
-static const State CheckSymbol(char &c)
-{
-    switch(c)
-    {
-
-        case '/':
-            return State::Slash;
-        case '\'':
-            return State::OQuote;
-    }
-}

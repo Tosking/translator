@@ -2,6 +2,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <cctype>
 using namespace std;
 
 Translator::Translator(string input){
@@ -75,6 +76,52 @@ string Translator::delete_comments(){
                 }
                 result += ch;
                 break;
+            case Number:
+               result += ch;
+               if(!isdigit(ch)){
+                   if(ch == '.')
+                       state = Dot;
+               }
+               if(ch == '\n'){
+                   state = Skip;
+               }
+               break;
+            case Dot:
+                result += ch;
+                if(!isdigit(ch)){
+                    state = Skip;
+                    break;
+                }
+                state = Double;
+                break;
+            case Double:
+                if(ch == '\n'){
+                    result += " double\n";
+                    state = Normal;
+                    break;
+                }
+                if(!isdigit(ch)){
+                    result += ch;
+                    if(ch == 'l'){
+                        state = Long;
+                        break;
+                    }
+                    state = Skip;
+                    break;
+                }
+                break;
+            case Skip:
+                if(ch == '\n'){
+                    result += " ERROR!\n";
+                    state = Normal;
+                    break;
+                }
+                result += ch;
+                break;
+            case Long:
+                result += " long\n";
+                state = Normal;
+                break;
             case Normal:
                 switch(ch){
                     case '/':
@@ -88,7 +135,14 @@ string Translator::delete_comments(){
                         result += ch;
                         state = OQuote;
                         break;
+                    case '.':
+                        state = Dot;
+                        result += ch;
+                        break;
                     default:
+                        if(isdigit(ch)){
+                            state = Number;
+                        }
                         result += ch;
                 }
 
