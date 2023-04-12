@@ -77,27 +77,40 @@ string Translator::delete_comments(){
                 result += ch;
                 break;
             case Number:
-               result += ch;
                if(!isdigit(ch)){
                    if(ch == '.')
                        state = Dot;
                }
                if(ch == '\n'){
-                   state = Skip;
+                   result += " ERROR!\n";
+                   state = Normal;
+                   break;
                }
+               result += ch;
                break;
             case Dot:
-                result += ch;
-                if(!isdigit(ch)){
-                    state = Skip;
+                if(ch == '\n'){
+                    result += " ERROR!\n";
+                    state = Normal;
                     break;
                 }
+                if(!isdigit(ch)){
+                    state = Skip;
+                    result += ch;
+                    break;
+                }
+                result += ch;
                 state = Double;
                 break;
             case Double:
                 if(ch == '\n'){
                     result += " double\n";
                     state = Normal;
+                    break;
+                }
+                if(ch == '/'){
+                    result += " double";
+                    state = Slash;
                     break;
                 }
                 if(!isdigit(ch)){
@@ -109,6 +122,7 @@ string Translator::delete_comments(){
                     state = Skip;
                     break;
                 }
+                result += ch;
                 break;
             case Skip:
                 if(ch == '\n'){
@@ -122,6 +136,17 @@ string Translator::delete_comments(){
                 result += " long\n";
                 state = Normal;
                 break;
+            case Identifer:
+                if(ch == '\n'){
+                    state = Normal;
+                    result += ch;
+                    break;
+                }
+                if(!isalpha(ch)){
+                    state = Skip;
+                    result += ch;
+                    break;
+                }
             case Normal:
                 switch(ch){
                     case '/':
@@ -143,7 +168,11 @@ string Translator::delete_comments(){
                         if(isdigit(ch)){
                             state = Number;
                         }
+                        if(isalpha(ch) || ch == '_'){
+                           state = Identifer;
+                        }
                         result += ch;
+                        break;
                 }
 
         }
