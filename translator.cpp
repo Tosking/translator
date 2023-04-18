@@ -80,49 +80,63 @@ string Translator::delete_comments(){
                if(!isdigit(ch)){
                    if(ch == '.')
                        state = Dot;
-               }
-               if(ch == '\n'){
-                   result += " ERROR!\n";
-                   state = Normal;
-                   break;
+                   else if(ch == 'e'){
+                       state = Power;
+                   }
+                   else if(ch == '\n'){
+                       result += " ERROR!\n";
+                       state = Normal;
+                       break;
+                   }
+                   else{
+                       state = Skip;
+                       break;
+                   }
                }
                result += ch;
                break;
             case Dot:
-                if(ch == '\n'){
-                    result += " ERROR!\n";
-                    state = Normal;
-                    break;
-                }
                 if(!isdigit(ch)){
-                    state = Skip;
+                    if(ch == 'e'){
+                        state = E;
+                        result += ch;
+                        break;
+                    }
+                    else if(ch == '\n'){
+                        result += " double\n";
+                        state = Normal;
+                        break;
+                    }
                     result += ch;
+                    state = Skip;
                     break;
                 }
                 result += ch;
                 state = Double;
                 break;
             case Double:
-                if(ch == '\n'){
-                    result += " double\n";
-                    state = Normal;
-                    break;
-                }
-                if(ch == '/'){
-                    result += " double";
-                    state = Slash;
-                    break;
-                }
                 if(!isdigit(ch)){
-                    result += ch;
-                    if(ch == 'l'){
-                        state = Long;
-                        break;
+                    switch(ch){
+                        case 'l':
+                            state = Long;
+                            break;
+                        case '\n':
+                            result += " double";
+                            state = Normal;
+                            break;
+                        case '/':
+                            result +=  " double";
+                            state = Slash;
+                            break;
+                        case 'e':
+                            state = E;
+                            break;
+                        default:
+                            state = Skip;
+                            break;
                     }
-                    state = Skip;
-                    break;
+                    result += ch;
                 }
-                result += ch;
                 break;
             case Skip:
                 if(ch == '\n'){
@@ -146,6 +160,42 @@ string Translator::delete_comments(){
                     state = Skip;
                     result += ch;
                     break;
+                }
+            case E:
+                if(!isdigit(ch)){
+                    if(ch == '+' || ch == '-'){
+                        state = Power;
+                    }
+                    else{
+                        if(ch == '\n'){
+                            result += " ERROR!\n";
+                            state = Normal;
+                            break;
+                        }
+                        state = Skip;
+                        result += ch;
+                        break;
+                    }
+                }
+                state = Power;
+                result += ch;
+                break;
+            case Power:
+                if(!isdigit(ch)){
+                    if(ch == 'l'){
+                        state = Long;
+                        result += ch;
+                        break;
+                    }
+                    else if(ch == '\n'){
+                        result += " double\n";
+                        state = Normal;
+                        break;
+                    }
+                    else{
+                        state = Skip;
+                        break;
+                    }
                 }
             case Normal:
                 switch(ch){
