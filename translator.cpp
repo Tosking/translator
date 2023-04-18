@@ -197,6 +197,8 @@ string Translator::delete_comments(){
                         break;
                     }
                 }
+                result += ch;
+                break;
             case Normal:
                 switch(ch){
                     case '/':
