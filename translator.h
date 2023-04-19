@@ -18,8 +18,10 @@ Skip,
 Double,
 Dot,
 Long,
+Float,
 E,
 Power,
+Sign
 };
 class Translator{
 private:

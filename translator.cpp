@@ -107,6 +107,16 @@ string Translator::delete_comments(){
                         state = Normal;
                         break;
                     }
+                    else if(ch == 'l'){
+                        state = Long;
+                        result += ch;
+                        break;
+                    }
+                    else if(ch == 'f'){
+                        state = Float;
+                        result += ch;
+                        break;
+                    }
                     result += ch;
                     state = Skip;
                     break;
@@ -119,6 +129,9 @@ string Translator::delete_comments(){
                     switch(ch){
                         case 'l':
                             state = Long;
+                            break;
+                        case 'f':
+                            state = Float;
                             break;
                         case '\n':
                             result += " double";
@@ -147,8 +160,24 @@ string Translator::delete_comments(){
                 result += ch;
                 break;
             case Long:
-                result += " long\n";
-                state = Normal;
+                if(ch == '\n'){
+                    result += " long\n";
+                    state = Normal;
+                }
+                else{
+                    result += ch;
+                    state = Skip;
+                }
+                break;
+            case Float:
+                if(ch == '\n'){
+                    result += " float\n";
+                    state = Normal;
+                }
+                else{
+                    result += ch;
+                    state = Skip;
+                }
                 break;
             case Identifer:
                 if(ch == '\n'){
@@ -164,7 +193,9 @@ string Translator::delete_comments(){
             case E:
                 if(!isdigit(ch)){
                     if(ch == '+' || ch == '-'){
-                        state = Power;
+                        result += ch;
+                        state = Sign;
+                        break;
                     }
                     else{
                         if(ch == '\n'){
@@ -187,6 +218,11 @@ string Translator::delete_comments(){
                         result += ch;
                         break;
                     }
+                    else if(ch == 'f'){
+                        state = Float;
+                        result += ch;
+                        break;
+                    }
                     else if(ch == '\n'){
                         result += " double\n";
                         state = Normal;
@@ -198,6 +234,22 @@ string Translator::delete_comments(){
                     }
                 }
                 result += ch;
+                break;
+            case Sign:
+                if(isdigit(ch)){
+                    state = Power;
+                    result += ch;
+                }
+                else{
+                    if(ch == '\n'){
+                        result += " ERROR!\n";
+                        state = Normal;
+                    }
+                    else{
+                        result += ch;
+                        state = Skip;
+                    }
+                }
                 break;
             case Normal:
                 switch(ch){
