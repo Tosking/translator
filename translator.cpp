@@ -83,7 +83,7 @@ string Translator::delete_comments(){
                    else if(ch == 'e'){
                        state = Power;
                    }
-                   else if(ch == '\n'){
+                   else if(!isalpha(ch) && !isdigit(ch)){
                        result += " ERROR!\n";
                        state = Normal;
                        break;
@@ -102,7 +102,7 @@ string Translator::delete_comments(){
                         result += ch;
                         break;
                     }
-                    else if(ch == '\n'){
+                    else if(!isalpha(ch) && !isdigit(ch)){
                         result += " double\n";
                         state = Normal;
                         break;
@@ -152,7 +152,7 @@ string Translator::delete_comments(){
                 }
                 break;
             case Skip:
-                if(ch == '\n'){
+                if(!isalpha(ch) && !isdigit(ch)){
                     result += " ERROR!\n";
                     state = Normal;
                     break;
@@ -160,7 +160,7 @@ string Translator::delete_comments(){
                 result += ch;
                 break;
             case Long:
-                if(ch == '\n'){
+                if(!isalpha(ch) && !isdigit(ch)){
                     result += " long\n";
                     state = Normal;
                 }
@@ -170,7 +170,7 @@ string Translator::delete_comments(){
                 }
                 break;
             case Float:
-                if(ch == '\n'){
+                if(!isalpha(ch) && !isdigit(ch)){
                     result += " float\n";
                     state = Normal;
                 }
@@ -180,7 +180,7 @@ string Translator::delete_comments(){
                 }
                 break;
             case Identifer:
-                if(ch == '\n'){
+                if(!isalpha(ch) && !isdigit(ch)){
                     state = Normal;
                     result += ch;
                     break;
@@ -198,7 +198,7 @@ string Translator::delete_comments(){
                         break;
                     }
                     else{
-                        if(ch == '\n'){
+                        if(!isalpha(ch) && !isdigit(ch)){
                             result += " ERROR!\n";
                             state = Normal;
                             break;
@@ -223,7 +223,7 @@ string Translator::delete_comments(){
                         result += ch;
                         break;
                     }
-                    else if(ch == '\n'){
+                    else if(!isalpha(ch) && !isdigit(ch)){
                         result += " double\n";
                         state = Normal;
                         break;
@@ -241,7 +241,7 @@ string Translator::delete_comments(){
                     result += ch;
                 }
                 else{
-                    if(ch == '\n'){
+                    if(!isalpha(ch) && !isdigit(ch)){
                         result += " ERROR!\n";
                         state = Normal;
                     }
