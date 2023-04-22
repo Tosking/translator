@@ -81,7 +81,7 @@ string Translator::delete_comments(){
                    if(ch == '.')
                        state = Dot;
                    else if(ch == 'e'){
-                       state = Power;
+                       state = E;
                    }
                    else if(!isalpha(ch) && !isdigit(ch)){
                        result += " ERROR!\n";
